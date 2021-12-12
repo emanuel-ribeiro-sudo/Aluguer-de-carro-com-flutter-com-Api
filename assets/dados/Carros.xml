@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="Carros.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<Carros>
+    <carro>
+        <matricula> ST-16-NL</matricula>
+        <marca> Toyota</marca>
+        <modelo> Hiace </modelo>
+        <kilometragem> 200 KM </kilometragem>
+        <cor> Cinza </cor>
+        <preco>3500</preco>
+        <img> 1 </img>
+        <livre>false</livre>
+    </carro>
+    <carro>
+        <matricula> ST-23-KD</matricula>
+        <marca> Toyota</marca>
+        <modelo> Hiace </modelo>
+        <kilometragem> 200 KM </kilometragem>
+        <cor> Cinza </cor>
+        <preco>3500</preco>
+        <img> 1 </img>
+        <livre>true</livre>
+    </carro>
+    <carro>
+        <matricula> ST-23-KD </matricula>
+        <marca> Audy </marca>
+        <modelo> R8 </modelo>
+        <kilometragem>0 KM</kilometragem>
+        <cor> Branco </cor>
+        <preco> 5000 </preco>
+        <img> 2 </img>
+        <livre> true</livre>
+    </carro>
+</Carros>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="Clientes">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="cliente" minOccurs="1" maxOccurs="unbounded">
+                    <xs:complexType >
+                        <xs:sequence>
+                            <xs:element name="bi" type="xs:integer"></xs:element>
+                            <xs:element name="nome" type="xs:string"></xs:element>
+                            <xs:element name="morada" type="xs:string"></xs:element>
+                            <xs:element name="telefone" type="xs:integer"></xs:element>
+                            <xs:element name="numero_carta" type="xs:integer"></xs:element>
+                            <xs:element name="utilizador" type="xs:string"></xs:element>
+                            <xs:element name="senha" type="xs:string"></xs:element>
+                            <xs:element name="cargo" type="xs:string"></xs:element>
+                        </xs:sequence>
+                        <xs:attribute name ="pais" type= "xs:string" use="optional " default ="Cabo Verde"/>
+                    </xs:complexType>
+                </xs:element>      
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

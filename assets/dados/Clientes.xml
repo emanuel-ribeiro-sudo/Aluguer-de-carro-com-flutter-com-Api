@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="Clientes.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<Clientes>
+    <cliente> 
+        <bi> 12345 </bi>
+        <nome> Emanuel </nome>
+        <morada> Figueira </morada>
+        <telefone> 9876432 </telefone>
+        <numero_carta>123456789</numero_carta>
+        <utilizador>Emanuel</utilizador>
+        <senha>12345</senha>
+        <cargo>Cliente</cargo>
+    </cliente>
+</Clientes>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="Carros">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="carro" minOccurs="1" maxOccurs="unbounded">
+                    <xs:complexType >
+                        <xs:sequence>
+                            <xs:element name="matricula" type="xs:string"></xs:element>
+                            <xs:element name="marca" type="xs:string"></xs:element>
+                            <xs:element name="modelo" type="xs:string"></xs:element>
+                            <xs:element name="kilometragem" type="xs:string"></xs:element>
+                            <xs:element name="cor" type="xs:string"></xs:element>
+                            <xs:element name="preco" type="xs:integer"></xs:element>
+                            <xs:element name="img" type="xs:string"></xs:element>
+                            <xs:element name="livre" type="xs:boolean"></xs:element>
+                        </xs:sequence>
+                        <xs:attribute name ="pais" type= "xs:string" use="optional " default ="Cabo Verde"/>
+                    </xs:complexType>
+                </xs:element>      
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
