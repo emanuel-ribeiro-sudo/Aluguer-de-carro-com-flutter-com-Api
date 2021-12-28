@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="Carros.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
-<Carros>
-    <carro>
+<Carros dono="Niguem">
+    <carro >
         <matricula> ST-16-NL</matricula>
         <marca> Toyota</marca>
         <modelo> Hiace </modelo>

@@ -1,22 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:rent_car/logics/clientes.dart';
 import '../../../constants.dart';
 import 'funcionarios_detail.dart';
-import 'package:xml/xml.dart' as xml;
 
 class Funcionarios_page extends StatelessWidget {
 
-  Future<List<Cliente>?> getClienteFromXML(BuildContext context) async{
-    String xmlString = await DefaultAssetBundle.of(context).loadString("assets/dados/Clientes.xml");
-    var raw = xml.parse(xmlString);
-    var elemets =raw.findAllElements("cliente");
-    return elemets.map((element){
-      return Cliente(int.parse(element.findElements("bi").first.text),element.findElements("nome").first.text, element.findElements("morada").first.text,
-          int.parse(element.findElements("numero_carta").first.text), element.findElements("cargo").first.text, element.findElements("senha").first.text,
-          element.findElements("telefone").first.text, element.findElements("utilizador").first.text);
-    }).toList();
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

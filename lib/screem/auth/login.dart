@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rent_car/auth/create_account.dart';
 import 'package:rent_car/constants.dart';
+import 'package:rent_car/screem/auth/create_account.dart';
 import 'package:rent_car/screem/cliente/clientes.dart';
 
 class LoginPage extends StatelessWidget {
@@ -34,7 +34,7 @@ class LoginPage extends StatelessWidget {
                         children: [
                           const Text("No have an account?",style: TextStyle(color: Colors.white),),
                           TextButton(onPressed: ()=> Navigator.push(context,MaterialPageRoute(
-                              builder: (context)=>CreateAccountPage())),
+                              builder: (context)=>const CreateAccountPage())),
                               child: const Text("Sign Up",
                               style: TextStyle(fontWeight: FontWeight.bold)),
                           )
@@ -79,9 +79,9 @@ class SignInForm extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: defaultPadding,),
-            TextFieldNameLogin(text:"Email",),
+            const TextFieldNameLogin(text:"Email",),
             TextFormField(
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                   hintText: "test@gmail.com",hintStyle: TextStyle(color: Colors.white)

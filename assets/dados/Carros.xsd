@@ -15,10 +15,11 @@
                             <xs:element name="img" type="xs:string"></xs:element>
                             <xs:element name="livre" type="xs:boolean"></xs:element>
                         </xs:sequence>
-                        <xs:attribute name ="pais" type= "xs:string" use="optional " default ="Cabo Verde"/>
+
                     </xs:complexType>
                 </xs:element>      
             </xs:sequence>
+            <xs:attribute name ="dono" type= "xs:string" use="optional " default ="Niguem"/>
         </xs:complexType>
     </xs:element>
 </xs:schema>
