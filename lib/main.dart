@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rent_car/screem/auth/login.dart';
 import '../constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Rent Car',
       theme: ThemeData(
           pageTransitionsTheme: const PageTransitionsTheme(builders: {
             TargetPlatform.iOS: ZoomPageTransitionsBuilder(),
@@ -42,10 +43,30 @@ class MyApp extends StatelessWidget {
 }
 
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
 
+class _MyHomePageState extends State<MyHomePage> {
+
+  @override
+  void initState(){
+   super.initState();
+   verificarToken().then((value){
+     if(value){
+       Navigator.pushReplacement(context, 
+       MaterialPageRoute(builder: (context)=>LoginPage())
+       );
+     }else{
+       // Navigator.pushReplacement(context,
+       //     MaterialPageRoute(builder: (context)=>MyHomePage())
+       // );
+   }
+   });
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -108,6 +129,15 @@ class MyHomePage extends StatelessWidget {
             )
         )
     );
+  }
+
+  Future<bool > verificarToken() async{
+    SharedPreferences sharedPreference = await SharedPreferences.getInstance();
+    if(sharedPreference.getString('token')!= null){
+      return true;
+    }else{
+      return false;
+    }
   }
 }
 
