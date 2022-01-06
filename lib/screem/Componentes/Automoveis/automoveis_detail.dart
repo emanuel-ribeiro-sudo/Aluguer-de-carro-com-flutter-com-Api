@@ -3,9 +3,9 @@ import 'package:rent_car/constants.dart';
 import 'package:rent_car/screem/Aluger/realizar.dart';
 
 class Automoveis_Details extends StatelessWidget {
-  final assetPath, cookieprice, cookiename;
+  final assetPath, carroPreco, carroMatricula;
 
-  Automoveis_Details({this.assetPath, this.cookieprice, this.cookiename});
+  Automoveis_Details({this.assetPath, this.carroPreco, this.carroMatricula});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +57,7 @@ class Automoveis_Details extends StatelessWidget {
             ),
             SizedBox(height: 20.0),
             Center(
-              child: Text(cookieprice,
+              child: Text(carroPreco,
                   style: TextStyle(
                       fontFamily: 'Varela',
                       fontSize: 22.0,
@@ -66,7 +66,7 @@ class Automoveis_Details extends StatelessWidget {
             ),
             SizedBox(height: 10.0),
             Center(
-              child: Text(cookiename,
+              child: Text(carroMatricula,
                   style: TextStyle(
                       color: bgColor,
                       fontFamily: 'Varela',

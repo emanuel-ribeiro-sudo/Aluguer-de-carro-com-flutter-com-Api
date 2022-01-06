@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:rent_car/screem/Componentes/Aluguers/Aluguers_page.dart';
 import 'package:rent_car/screem/Componentes/Automoveis/automoveis_page.dart';
 import 'package:rent_car/screem/Componentes/Empresas/empresa_page.dart';
-class Clientes extends StatelessWidget {
+class Clientes extends StatefulWidget {
+  @override
+  State<Clientes> createState() => _ClientesState();
+}
+
+class _ClientesState extends State<Clientes> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
