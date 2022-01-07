@@ -25,7 +25,7 @@ class _Automoveis_pageState extends State<Automoveis_page> {
     });
   }
   @override
-  void init(){
+  void initState(){
     super.initState();
     getCars();
   }
