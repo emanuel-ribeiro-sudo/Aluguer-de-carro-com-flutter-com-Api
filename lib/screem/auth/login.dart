@@ -154,21 +154,19 @@ class _LoginPageState extends State<LoginPage> {
 
    Future<bool> login(String email,String senha) async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse('http://10.0.2.2:3333/users/login/');
+    var url = Uri.parse('http://192.168.43.232:3333/users/login/');
     http.Response response = await http.post(url,
         body:{
           "email": email,
           "senha": senha,
         });
-      print(response.body);
-    // if(response.statusCode == 200){
-    //   print(jsonDecode(response.body)['token']);
-    //   return true;
-    // }else{
-    //   print(jsonDecode(response.body));
-    //   return false;
-    // }
-     return true;
+    if(response.statusCode == 200){
+      print(jsonDecode(response.body)['token']);
+      return true;
+    }else{
+      print(jsonDecode(response.body));
+      return false;
+    }
   }
 }
 
