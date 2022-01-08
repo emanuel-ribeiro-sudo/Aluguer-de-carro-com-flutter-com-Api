@@ -23,6 +23,7 @@ class _Automoveis_pageState extends State<Automoveis_page> {
     setState(() {
       automovelData=data['automoveis'];
     });
+
   }
   @override
   void initState(){

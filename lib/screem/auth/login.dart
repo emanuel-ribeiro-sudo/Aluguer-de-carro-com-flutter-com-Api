@@ -120,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                         async {
                           FocusScopeNode curentFocus = FocusScope.of(context);
                           if( _formkey.currentState!.validate()){
-                            bool dacerto = await login(_emailController.text,_passwordController.text);
+                            bool dacerto = await login(_emailController.text, _passwordController.text);
                             if(!curentFocus.hasPrimaryFocus){
                               curentFocus.unfocus();
                             }
@@ -152,14 +152,17 @@ class _LoginPageState extends State<LoginPage> {
   textAlign: TextAlign.center,),backgroundColor: remColor,);
 
 
-   Future<bool> login(String email,String senha) async{
+   Future<bool> login(String username, String password) async{
+      print(username+' === '+ password);
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse('http://192.168.43.232:3333/users/login/');
+    var url = Uri.parse('http://192.168.42.191:3333/users/login/');
     http.Response response = await http.post(url,
         body:{
-          "email": email,
-          "senha": senha,
+          "email": username,
+          "senha": password,
+          "logado":1.toString()
         });
+    // print(response.body);
     if(response.statusCode == 200){
       print(jsonDecode(response.body)['token']);
       return true;
