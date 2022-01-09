@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:rent_car/constants.dart';
@@ -6,9 +5,10 @@ import 'package:rent_car/screem/auth/create_account.dart';
 import 'package:rent_car/screem/cliente/clientes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({Key? key,}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -18,6 +18,10 @@ class _LoginPageState extends State<LoginPage> {
   final _formkey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final logado = true;
+
+  // late Map json;
+  // List user= [];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -46,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           const Text("No have an account?",style: TextStyle(color: Colors.white),),
                           TextButton(onPressed: ()=> Navigator.push(context,MaterialPageRoute(
-                              builder: (context)=>const CreateAccountPage())),
+                              builder: (context)=> CreateAccountPage())),
                               child: const Text("Sign Up",
                               style: TextStyle(fontWeight: FontWeight.bold)),
                           )
@@ -126,13 +130,6 @@ class _LoginPageState extends State<LoginPage> {
                             if(!curentFocus.hasPrimaryFocus){
                               curentFocus.unfocus();
                             }
-                            // if (dacerto){
-                            //   Navigator.pushReplacement(context,
-                            //       MaterialPageRoute(builder: (context)=>Clientes()));
-                            //   }else{
-                            //   _passwordController.clear();
-                            //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                            // }
                           }
                         },
                         // Navigator.push(context,
@@ -155,9 +152,8 @@ class _LoginPageState extends State<LoginPage> {
 
 
    Future login(String username, String password) async{
-      // print(username+' === '+ password);
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse('${BASE_URL}/users/login/');
+    var url = Uri.parse('$BASE_URL/users/login/');
     var response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -167,8 +163,10 @@ class _LoginPageState extends State<LoginPage> {
           "senha":password,
         })
     );
-     // print(response.body);
     if(response.statusCode == 200){
+      // json =jsonDecode(response.body);
+      // user = json['user'];
+      // print("{user['cargo']}");
       // print(jsonDecode(response.body)['token']);
       // return true;
       Navigator.pushReplacement(context,
