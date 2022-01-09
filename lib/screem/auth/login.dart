@@ -120,17 +120,19 @@ class _LoginPageState extends State<LoginPage> {
                         async {
                           FocusScopeNode curentFocus = FocusScope.of(context);
                           if( _formkey.currentState!.validate()){
-                            bool dacerto = await login(_emailController.text, _passwordController.text);
+                           // bool dacerto =
+                            login(_emailController.text,_passwordController.text);
+                            // print(dacerto);
                             if(!curentFocus.hasPrimaryFocus){
                               curentFocus.unfocus();
                             }
-                            if (dacerto){
-                              Navigator.pushReplacement(context,
-                                  MaterialPageRoute(builder: (context)=>Clientes()));
-                              }else{
-                              _passwordController.clear();
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                            }
+                            // if (dacerto){
+                            //   Navigator.pushReplacement(context,
+                            //       MaterialPageRoute(builder: (context)=>Clientes()));
+                            //   }else{
+                            //   _passwordController.clear();
+                            //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            // }
                           }
                         },
                         // Navigator.push(context,
@@ -152,27 +154,33 @@ class _LoginPageState extends State<LoginPage> {
   textAlign: TextAlign.center,),backgroundColor: remColor,);
 
 
-   Future<bool> login(String username, String password) async{
-      print(username+' === '+ password);
+   Future login(String username, String password) async{
+      // print(username+' === '+ password);
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse('http://192.168.42.191:3333/users/login/');
-    http.Response response = await http.post(url,
-        body:{
-          "email": username,
-          "senha": password,
-          "logado":1.toString()
-        });
-    // print(response.body);
+    var url = Uri.parse('${BASE_URL}/users/login/');
+    var response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body:jsonEncode(<String, String>{
+          "email":username,
+          "senha":password,
+        })
+    );
+     // print(response.body);
     if(response.statusCode == 200){
-      print(jsonDecode(response.body)['token']);
-      return true;
+      // print(jsonDecode(response.body)['token']);
+      // return true;
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context)=>Clientes()));
     }else{
-      print(jsonDecode(response.body));
-      return false;
+      // print(jsonDecode(response.body));
+      // return false;
+      _passwordController.clear();
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 }
-
 
 class TextFieldNameLogin extends StatelessWidget {
   const TextFieldNameLogin({

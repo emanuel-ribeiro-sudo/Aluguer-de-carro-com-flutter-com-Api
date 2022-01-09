@@ -14,4 +14,4 @@ OutlineInputBorder textFieldBorder = OutlineInputBorder(
   ),
 );
 
-const String BASE_URL = 'http://192.168.42.191:3333';
+const String BASE_URL = 'http://192.168.42.35:3333';

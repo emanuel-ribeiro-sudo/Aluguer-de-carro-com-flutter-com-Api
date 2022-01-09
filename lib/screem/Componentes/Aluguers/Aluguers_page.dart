@@ -1,11 +1,34 @@
 import 'package:flutter/material.dart';
-
+import 'dart:convert';
 import '../../../constants.dart';
 import 'Aluguers_detail.dart';
+import 'package:http/http.dart' as http;
 
-class Aluguers_page extends StatelessWidget {
-  const Aluguers_page({Key? key}) : super(key: key);
 
+class Aluguers_page extends StatefulWidget {
+
+  @override
+  State<Aluguers_page> createState() => _Aluguers_pageState();
+}
+
+class _Aluguers_pageState extends State<Aluguers_page> {
+  // late Map data;
+  // List aluguersData = [];
+  // getAluguers() async{
+  //   var url = Uri.parse('${BASE_URL}/automoveis');
+  //   http.Response response = await http.get(url);
+  //   debugPrint(response.body);
+  //   data = jsonDecode(response.body);
+  //   setState(() {
+  //     aluguersData=data[''];
+  //   });
+  //
+  // }
+  // @override
+  // void initState(){
+  //   super.initState();
+  //   getAluguers();
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

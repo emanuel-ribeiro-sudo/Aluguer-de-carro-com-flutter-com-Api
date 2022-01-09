@@ -16,7 +16,7 @@ class _Automoveis_pageState extends State<Automoveis_page> {
   late Map data;
   List automovelData = [];
   getCars() async{
-    var url = Uri.parse('http://localhost:3333/automoveis');
+    var url = Uri.parse('${BASE_URL}/automoveis');
     http.Response response = await http.get(url);
     debugPrint(response.body);
     data = jsonDecode(response.body);
@@ -39,21 +39,33 @@ class _Automoveis_pageState extends State<Automoveis_page> {
         itemCount: automovelData==null? 0 : automovelData.length,
         itemBuilder: (BuildContext context, int index) {
          // const SizedBox(height: 15.0),
-          return Container(
-          padding: const EdgeInsets.only(right: 15.0),
-          width: MediaQuery.of(context).size.width - 30.0,
-          height: MediaQuery.of(context).size.height - 50.0,
-          child: GridView.count(
-          crossAxisCount: 2,
-          primary: false,
-          crossAxisSpacing: 10.0,
-          mainAxisSpacing: 15.0,
-          childAspectRatio: 0.8,
-          children: <Widget>[
-          _buildCard("${automovelData[index]["matricula"]}", "${automovelData[index]["preco_diario"]}", 'assets/automoveis/2.jpg', context),
-          ],
-          )
-          );
+         //  if("${automovelData[index]["estado"]}"=='Ocupado'){
+         //    return CircularProgressIndicator();
+         //  }else {
+            return _buildCard(
+                "${automovelData[index]["matricula"]}",
+                "${automovelData[index]["preco_diario"]}",
+                'assets/automoveis/${index + 2}.jpg',
+                "${automovelData[index]["marca"]}",
+                "${automovelData[index]["cor"]}",
+                "${automovelData[index]["estado"]}",
+                context);
+          // }
+          //   Container(
+          // padding: const EdgeInsets.only(right: 15.0),
+          // width: MediaQuery.of(context).size.width - 30.0,
+          // height: MediaQuery.of(context).size.height - 50.0,
+          // child: GridView.count(
+          // crossAxisCount: 2,
+          // primary: false,
+          // crossAxisSpacing: 10.0,
+          // mainAxisSpacing: 15.0,
+          // childAspectRatio: 0.8,
+          // children: <Widget>[
+          // _buildCard("${automovelData[index]["matricula"]}", "${automovelData[index]["preco_diario"]}", 'assets/automoveis/2.jpg', context),
+          // ],
+          // )
+          // );
          // const SizedBox(height: 15.0,),
         },
         //children: <Widget>[
@@ -90,7 +102,7 @@ class _Automoveis_pageState extends State<Automoveis_page> {
     );
   }
 
-  Widget _buildCard(String matricula, String preco, String imgPath, context) {
+  Widget _buildCard(String matricula, String preco, String imgPath,String marca,String cor, String estado, context) {
     return Padding(
         padding: const EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0, right: 5.0),
         child: InkWell(
@@ -99,7 +111,10 @@ class _Automoveis_pageState extends State<Automoveis_page> {
                   MaterialPageRoute(builder: (context) => Automoveis_Details(
                     assetPath: imgPath,
                     carroPreco:preco,
-                    carroMatricula: matricula
+                    carroMatricula: matricula,
+                    carromarca: marca,
+                    carrocor: cor,
+                    carroestado: estado,
                   ))
               );
             }

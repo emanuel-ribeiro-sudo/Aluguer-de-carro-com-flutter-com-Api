@@ -3,9 +3,9 @@ import 'package:rent_car/constants.dart';
 import 'package:rent_car/screem/Aluger/realizar.dart';
 
 class Automoveis_Details extends StatelessWidget {
-  final assetPath, carroPreco, carroMatricula;
+  final assetPath, carroPreco, carroMatricula,carromarca,carrocor,carroestado;
 
-  Automoveis_Details({this.assetPath, this.carroPreco, this.carroMatricula});
+  Automoveis_Details({this.assetPath, this.carroPreco, this.carroMatricula, this.carromarca, this.carrocor, this.carroestado});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +19,7 @@ class Automoveis_Details extends StatelessWidget {
             Navigator.of(context).pop();
           },
         ),
-        title: Text('Pickup',
+        title: Text('Automovel',
             style: TextStyle(
                 fontFamily: 'Varela',
                 fontSize: 20.0,
@@ -38,7 +38,7 @@ class Automoveis_Details extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 20.0),
             child: Text(
-              'Automovel',
+              carromarca,
               style: TextStyle(
                       fontFamily: 'Varela',
                       fontSize: 42.0,
@@ -76,7 +76,8 @@ class Automoveis_Details extends StatelessWidget {
             Center(
               child: Container(
                 width: MediaQuery.of(context).size.width - 50.0,
-                child: const Text('Cold, creamy ice cream sandwiched between delicious deluxe cookies. Pick your favorite deluxe cookies and ice cream flavor.',
+                child: Text('Cor: '+'${carrocor}'+'      '
+                    'Estado: '+'${carroestado}',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                       fontFamily: 'Varela',
@@ -105,15 +106,26 @@ class Automoveis_Details extends StatelessWidget {
 
                 ),
                   ),
-                      onPressed: ()=>Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) =>Realizar_Aluguer(
-                        )),
+                      onPressed: (){
+                    if(carroestado!="Ocupado"){
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) =>Realizar_Aluguer(
+                              matricula:carroMatricula,
+                              precototal:carroPreco
+                          )));
+                    }else{
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          }
+                      }
+
                   )
                 )
               )
             )
-            )]
+            ]
       ),
     );
   }
+  final snackBar = const SnackBar(content: Text('Automovel Ocuoado',
+    textAlign: TextAlign.center,),backgroundColor: remColor,);
 }
