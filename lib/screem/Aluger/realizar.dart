@@ -20,10 +20,10 @@ class Realizar_Aluguer extends StatefulWidget {
 
 class _Realizar_AluguerState extends State<Realizar_Aluguer> {
 
-  SharedPreferences guardabi =  SharedPreferences.getInstance() as SharedPreferences;
+
   final _matriculaController = TextEditingController();
 
-  late final cliente=guardabi.getString('bi');
+  late String cliente= '';
 
   final _precoController = TextEditingController();
 
@@ -32,26 +32,21 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
   final _dataController= TextEditingController();
 
   bool estadoAluguer = true;
-  // Future<bool > verificarBi() async{
-  //   SharedPreferences guardabi = await SharedPreferences.getInstance();
-  //   if(guardabi.getString('bi')== null){
-  //     return false;
-  //   }else{
-  //     cliente = guardabi.getString('bi');
-  //     return true;
-  //   }
-  // }
-  // @override
-  // void initState(){
-  //   super.initState();
-  //   verificarBi().then((value){
-  //     if(!value){
-  //
-  //     }else{
-  //       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  //     }
-  //   });
-  // }
+  verificarBi() async{
+    SharedPreferences guardabi = await SharedPreferences.getInstance();
+    if(guardabi.getString('bi')== null){
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }else{
+      cliente = guardabi.getString('bi').toString();
+      print(cliente);
+    }
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    verificarBi();
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -169,7 +164,7 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
     );
   }
 
-  final snackBar = const SnackBar(content: Text('tem bi',
+  final snackBar = const SnackBar(content: Text('ca tem bi',
     textAlign: TextAlign.center,),backgroundColor: Colors.green,);
 
   Future realizarAluguer(String bi,String carro, String data, String tempo,String preco,String estado) async{
