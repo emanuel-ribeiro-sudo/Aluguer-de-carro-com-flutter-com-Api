@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:rent_car/main.dart';
 import 'package:rent_car/screem/Componentes/Automoveis/automoveis_page.dart';
 import 'package:rent_car/screem/Componentes/Empresas/empresa_page.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 class Admin extends StatelessWidget {
   const Admin({Key? key}) : super(key: key);
 
@@ -25,14 +26,17 @@ class Admin extends StatelessWidget {
           ),
           actions: [
             IconButton(
-                onPressed: (){},
-                icon: Icon(Icons.search)),
-            IconButton(
-                onPressed: (){},
-                icon: Icon(Icons.more_vert))
+                onPressed: ()async{
+                  bool saiu = await sair();
+                  if(saiu){
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context)=>MyHomePage()));
+                  }
+                },
+                icon: Icon(Icons.logout)),
           ],
         ),
-      body: const TabBarView(
+      body: TabBarView(
         children: [
           Empresa_page(),
           Automoveis_page(),
@@ -42,5 +46,10 @@ class Admin extends StatelessWidget {
       ),
       ),
     );
+  }
+  Future <bool> sair() async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.clear();
+    return true;
   }
 }

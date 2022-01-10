@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:rent_car/screem/Componentes/Aluguers/Aluguers_page.dart';
 import 'package:rent_car/screem/Componentes/Automoveis/automoveis_page.dart';
 import 'package:rent_car/screem/Componentes/Empresas/empresa_page.dart';
-class Clientes extends StatefulWidget {
-  @override
-  State<Clientes> createState() => _ClientesState();
-}
+import 'package:shared_preferences/shared_preferences.dart';
 
-class _ClientesState extends State<Clientes> {
+import '../../main.dart';
+class Clientes extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -28,11 +27,17 @@ class _ClientesState extends State<Clientes> {
           ),
           actions: [
             IconButton(
-                onPressed: (){},
-                icon: Icon(Icons.search)),
-            IconButton(
-                onPressed: (){},
-                icon: Icon(Icons.more_vert))
+                onPressed: () async{
+                  bool saiu = await sair();
+                  if(saiu){
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context)=>MyHomePage()));
+                  }
+                },
+                icon: Icon(Icons.logout)),
+            // IconButton(
+            //     onPressed: (){},
+            //     icon: Icon(Icons.more_vert))
           ],
         ),
         body: TabBarView(
@@ -43,5 +48,10 @@ class _ClientesState extends State<Clientes> {
           ]),
         ),
     );
+  }
+  Future <bool> sair() async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.clear();
+    return true;
   }
 }

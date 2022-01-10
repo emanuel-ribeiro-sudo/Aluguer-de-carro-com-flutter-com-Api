@@ -6,7 +6,7 @@ import '../../../constants.dart';
 import 'automoveis_detail.dart';
 
 class Automoveis_page extends StatefulWidget {
-  const Automoveis_page({Key? key}) : super(key: key);
+
 
   @override
   State<Automoveis_page> createState() => _Automoveis_pageState();
@@ -16,7 +16,7 @@ class _Automoveis_pageState extends State<Automoveis_page> {
   late Map data;
   List automovelData = [];
   getCars() async{
-    var url = Uri.parse('${BASE_URL}/automoveis');
+    var url = Uri.parse('$BASE_URL/automoveis');
     http.Response response = await http.get(url);
     debugPrint(response.body);
     data = jsonDecode(response.body);
@@ -102,7 +102,7 @@ class _Automoveis_pageState extends State<Automoveis_page> {
     );
   }
 
-  Widget _buildCard(String matricula, String preco, String imgPath,String marca,String cor, String estado, context) {
+  Widget _buildCard(String matricula, String preco, String imgPath,String marca,String cor, String estado,context) {
     return Padding(
         padding: const EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0, right: 5.0),
         child: InkWell(

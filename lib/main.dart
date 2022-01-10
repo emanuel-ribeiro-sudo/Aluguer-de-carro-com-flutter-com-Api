@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:rent_car/screem/auth/create_account.dart';
 import 'package:rent_car/screem/auth/login.dart';
+import 'package:rent_car/screem/cliente/clientes.dart';
 import '../constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -56,14 +58,14 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState(){
    super.initState();
    verificarToken().then((value){
-     if(value){
-       Navigator.pushReplacement(context, 
-       MaterialPageRoute(builder: (context)=>LoginPage())
+     if(!value){
+
+       Navigator.pushReplacement(context,
+       MaterialPageRoute(builder: (context)=>const LoginPage())
        );
      }else{
-       // Navigator.pushReplacement(context,
-       //     MaterialPageRoute(builder: (context)=>MyHomePage())
-       // );
+       Navigator.pushReplacement(context,
+           MaterialPageRoute(builder: (context)=>Clientes()));
    }
    });
   }
@@ -91,11 +93,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             width:double.infinity ,
                             child: ElevatedButton(
                               onPressed: ()=>Navigator.push(context,
-                                  MaterialPageRoute(builder: (context)=>const LoginPage())),
+                                  MaterialPageRoute(builder: (context)=> const LoginPage())),
                               style: TextButton.styleFrom(
                                   backgroundColor: primaryColor
-                              )
-                                ,
+                              ),
 
                               child: const Text("Sing In"),
                             ),
@@ -105,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           width:double.infinity ,
                           child: ElevatedButton(
                             onPressed: ()=> Navigator.push(context,
-                                MaterialPageRoute(builder: (context)=>const MyHomePage())),
+                                MaterialPageRoute(builder: (context)=> CreateAccountPage())),
                             style: TextButton.styleFrom(
                                 elevation: 0,
                                 backgroundColor: Colors.transparent,
@@ -133,10 +134,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<bool > verificarToken() async{
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
-    if(sharedPreference.getString('token')!= null){
-      return true;
-    }else{
+    if(sharedPreference.getString('token')== null){
       return false;
+    }else{
+      return true;
     }
   }
 }

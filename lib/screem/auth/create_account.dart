@@ -27,6 +27,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   final _senha2Controller= TextEditingController();
 
   final _formkey = GlobalKey<FormState>();
+  late Map _data;
+  List _condutoresData = [];
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +72,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                       validator: (bi){
                         if(bi==null || bi.isEmpty){
                         return 'Por favor, degite um numero Bi';
-                        }else if(bi.length<7){
+                        }else if(bi.length<6){
                         return 'Por favor, degite um numero Bi ,maior que 6 caracteres';
                         }
                         return null;
@@ -87,7 +89,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                       validator: (numeroCarta){
                         if(numeroCarta==null || numeroCarta.isEmpty){
                           return 'Por favor, degite um numero Carta';
-                        }else if(numeroCarta.length<7){
+                        }else if(numeroCarta.length<5){
                           return 'Por favor, degite um numero carta ,maior que 6 caracteres';
                         }
                         return null;
@@ -223,13 +225,18 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   child: ElevatedButton(onPressed:  () async {
                     FocusScopeNode curentFocus = FocusScope.of(context);
                     if (_formkey.currentState!.validate()) {
-                      createAccounte(_biController.text,_nomeController.text,_morradaController.text,_telefoneController.text,_numeroCartaController.text,_emailController.text,_senhaController.text);
+                      bool temcarta = await getCarta(_biController.text,_numeroCartaController.text);
+                      if(temcarta == true){
+                        await createAccount(_biController.text,_nomeController.text,_morradaController.text,_telefoneController.text,_numeroCartaController.text,_emailController.text,_senhaController.text);
+                      }else{
+                        ScaffoldMessenger.of(context).showSnackBar(avisoSemcarta);
+                      }
+                      //createAccounte(_biController.text,_nomeController.text,_morradaController.text,_telefoneController.text,_numeroCartaController.text,_emailController.text,_senhaController.text);
                       if (!curentFocus.hasPrimaryFocus) {
                         curentFocus.unfocus();
                       }
                     }
                   },
-
                       // style: TextButton.styleFrom(backgroundColor: Colors.blue),
                       child: const Text("Sign Up")
                   ),
@@ -243,7 +250,11 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   }
   final snackBar = const SnackBar(content: Text('Algo de errado nao esta certo',
     textAlign: TextAlign.center,),backgroundColor: remColor,);
-  Future createAccounte(String bilhte, String nome,String morrada, String telefone, String carta,String email,String senha) async{
+
+  final avisoSemcarta = const SnackBar(content: Text('O numero de carta inserido nao existe',
+    textAlign: TextAlign.center,),backgroundColor: remColor,);
+
+  Future createAccount(String bilhte, String nome,String morrada, String telefone, String carta,String email,String senha) async{
     var url = Uri.parse('$BASE_URL/addusers');
     var response = await http.post(url,
         headers: <String, String>{
@@ -270,6 +281,21 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
+
+   Future <bool> getCarta(String bi,String carta) async {
+    var url = Uri.parse('$ApiDGTR/condutores/'+bi);
+    http.Response response = await http.get(url);
+    //  debugPrint(response.body);
+    _data = jsonDecode(response.body);
+    _condutoresData=_data['condutores'];
+    if(_condutoresData[0]['numero_carta']==carta){
+      return true;
+    }else{
+      return false;
+    }
+    // debugPrint("${_condutoresData[0]['numero_carta']}");
+  }
+
 }
 
 class TextFieldName extends StatelessWidget {

@@ -13,5 +13,6 @@ OutlineInputBorder textFieldBorder = OutlineInputBorder(
       color: Colors.black.withOpacity(0.1)
   ),
 );
-
-const String BASE_URL = 'http://192.168.42.35:3333';
+const String URL = '192.168.42.206';
+const String BASE_URL = 'http://$URL:3333';
+const String ApiDGTR  = 'http://$URL:8080';

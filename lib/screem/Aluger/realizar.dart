@@ -1,20 +1,57 @@
 
 
 import 'package:flutter/material.dart';
-
+import 'package:rent_car/screem/Componentes/Automoveis/automoveis_page.dart';
 import '../../constants.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Realizar_Aluguer extends StatelessWidget {
-  var x;
+class Realizar_Aluguer extends StatefulWidget {
 
-  Realizar_Aluguer({Key? key, this.matricula, this.ciente, this.precototal}) : super(key: key);
+  Realizar_Aluguer({Key? key, this.matricula, this.precototal}) : super(key: key);
   final matricula;
-  final ciente;
+
   final precototal;
+
+  @override
+  State<Realizar_Aluguer> createState() => _Realizar_AluguerState();
+}
+
+class _Realizar_AluguerState extends State<Realizar_Aluguer> {
+
+  SharedPreferences guardabi =  SharedPreferences.getInstance() as SharedPreferences;
   final _matriculaController = TextEditingController();
+
+  late final cliente=guardabi.getString('bi');
+
   final _precoController = TextEditingController();
+
   final _tempoController = TextEditingController();
+
   final _dataController= TextEditingController();
+
+  bool estadoAluguer = true;
+  // Future<bool > verificarBi() async{
+  //   SharedPreferences guardabi = await SharedPreferences.getInstance();
+  //   if(guardabi.getString('bi')== null){
+  //     return false;
+  //   }else{
+  //     cliente = guardabi.getString('bi');
+  //     return true;
+  //   }
+  // }
+  // @override
+  // void initState(){
+  //   super.initState();
+  //   verificarBi().then((value){
+  //     if(!value){
+  //
+  //     }else{
+  //       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  //     }
+  //   });
+  // }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -48,7 +85,7 @@ class Realizar_Aluguer extends StatelessWidget {
                 const TextFieldNameRealizarAlu(text:"Automovel",),
                 TextFormField(
                   // controller: _matriculaController,
-                  initialValue: matricula,
+                  initialValue: widget.matricula,
                   enabled: false,
                   style: const TextStyle(color: bgColor),
                   keyboardType: TextInputType.emailAddress,
@@ -59,6 +96,7 @@ class Realizar_Aluguer extends StatelessWidget {
                 const SizedBox(height: defaultPadding,),
                 const TextFieldNameRealizarAlu(text:"Cliente",),
                 TextFormField(
+                  initialValue: cliente,
                   enabled: false,
                   style: const TextStyle(color: bgColor),
                   decoration: const InputDecoration(
@@ -115,7 +153,9 @@ class Realizar_Aluguer extends StatelessWidget {
                       const SizedBox(height: defaultPadding,),
                       SizedBox(
                         width: double.infinity,
-                        child: ElevatedButton(onPressed:  (){},
+                        child: ElevatedButton(onPressed:  (){
+                          realizarAluguer(cliente.toString(), widget.matricula, _dataController.text, _tempoController.text, _precoController.text, estadoAluguer.toString());
+                        },
                             child: const Text("Confirmar")
                         ),
                       )
@@ -128,73 +168,31 @@ class Realizar_Aluguer extends StatelessWidget {
         )
     );
   }
+
+  final snackBar = const SnackBar(content: Text('tem bi',
+    textAlign: TextAlign.center,),backgroundColor: Colors.green,);
+
+  Future realizarAluguer(String bi,String carro, String data, String tempo,String preco,String estado) async{
+    var url = Uri.parse('$BASE_URL/users/'+bi+'/alguers');
+    var response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body:jsonEncode(<String, String>{
+          "matricula":widget.matricula,
+          "data_inicio":data,
+          "tempo":tempo,
+          "preco_total":preco,
+          "estado":estado
+        })
+    );
+    if(response.statusCode == 200){
+      // Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>Automoveis_page()));
+    }else{
+      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
 }
-//
-// class SignInForm extends StatefulWidget {
-//   const SignInForm({Key? key}) : super(key: key);
-//
-//   @override
-//   State<SignInForm> createState() => _SignInFormState();
-// }
-//
-// class _SignInFormState extends State<SignInForm> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Form(
-//
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             const SizedBox(height: defaultPadding,),
-//             const TextFieldNameRealizarAlu(text:"Automovel",),
-//             TextFormField(
-//               enabled: false,
-//               style: const TextStyle(color: bgColor),
-//               keyboardType: TextInputType.emailAddress,
-//               decoration: const InputDecoration(
-//                  // hintText: "ST-12-IO",hintStyle: TextStyle(color: bgColor)
-//               ),
-//             ),
-//             const SizedBox(height: defaultPadding,),
-//             const TextFieldNameRealizarAlu(text:"Cliente",),
-//             TextFormField(
-//               enabled: false,
-//               style: const TextStyle(color: bgColor),
-//               decoration: const InputDecoration(
-//                  // hintText: "Jose Almeida",hintStyle: TextStyle(color: bgColor)
-//               ),
-//             ),
-//             const SizedBox(height: defaultPadding,),
-//             const TextFieldNameRealizarAlu(text:"Data Inicio",),
-//             TextFormField(
-//               style: const TextStyle(color: bgColor),
-//               decoration: const InputDecoration(
-//                   hintText: "12/12/21",hintStyle: TextStyle(color: bgColor)
-//               ),
-//             ),
-//             const SizedBox(height: defaultPadding,),
-//             const TextFieldNameRealizarAlu(text:"Tempo",),
-//             TextFormField(
-//               style: const TextStyle(color: bgColor),
-//               decoration: const InputDecoration(
-//                   hintText: "4",hintStyle: TextStyle(color: bgColor)
-//               ),
-//             ),
-//             const SizedBox(height: defaultPadding,),
-//             const TextFieldNameRealizarAlu(text:"Total a pagar",),
-//             TextFormField(
-//               enabled: false,
-//               style: const TextStyle(color: bgColor),
-//               decoration: const InputDecoration(
-//                  // hintText: "6000 CVE",hintStyle: TextStyle(color: bgColor)
-//               ),
-//             ),
-//             const SizedBox(height: defaultPadding,),
-//           ],
-//         )
-//     );
-//   }
-// }
 
 class TextFieldNameRealizarAlu extends StatelessWidget {
   const TextFieldNameRealizarAlu({

@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:rent_car/constants.dart';
+import 'package:rent_car/screem/admin/admin.dart';
 import 'package:rent_car/screem/auth/create_account.dart';
 import 'package:rent_car/screem/cliente/clientes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,8 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
   final logado = true;
 
-  // late Map json;
-  // List user= [];
+   late Map _json;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -153,6 +152,7 @@ class _LoginPageState extends State<LoginPage> {
 
    Future login(String username, String password) async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    SharedPreferences guardabi = await SharedPreferences.getInstance();
     var url = Uri.parse('$BASE_URL/users/login/');
     var response = await http.post(url,
         headers: <String, String>{
@@ -164,13 +164,18 @@ class _LoginPageState extends State<LoginPage> {
         })
     );
     if(response.statusCode == 200){
-      // json =jsonDecode(response.body);
-      // user = json['user'];
-      // print("{user['cargo']}");
-      // print(jsonDecode(response.body)['token']);
-      // return true;
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context)=>Clientes()));
+      _json = jsonDecode(response.body);
+      //  print(_json['token']);
+      await sharedPreferences.setString('token', "Token ${_json['token']}");
+      await guardabi.setString('bi', "${_json['user']['bi']}");
+      if(_json['user']['cargo']=='Cliente' || _json['user']['cargo']=='cliente'){
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context)=>Clientes(
+            )));
+      }else if(_json['user']['cargo']=='Admin' || _json['user']['cargo']=='admin') {
+        Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context)=>const Admin()));
+      }
     }else{
       // print(jsonDecode(response.body));
       // return false;

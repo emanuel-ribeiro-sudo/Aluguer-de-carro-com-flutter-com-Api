@@ -111,7 +111,7 @@ class Automoveis_Details extends StatelessWidget {
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) =>Realizar_Aluguer(
                               matricula:carroMatricula,
-                              precototal:carroPreco
+                              precototal:carroPreco,
                           )));
                     }else{
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
