@@ -1,7 +1,6 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:rent_car/screem/Componentes/Automoveis/automoveis_page.dart';
 import '../../constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -21,10 +20,10 @@ class Realizar_Aluguer extends StatefulWidget {
 class _Realizar_AluguerState extends State<Realizar_Aluguer> {
 
 
-  final _matriculaController = TextEditingController();
-
-  late String cliente= '';
-
+  //final _matriculaController = TextEditingController();
+  String valorPagar = '';
+  String cliente='0';
+  var resultado;
   final _precoController = TextEditingController();
 
   final _tempoController = TextEditingController();
@@ -32,21 +31,32 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
   final _dataController= TextEditingController();
 
   bool estadoAluguer = true;
-  verificarBi() async{
-    SharedPreferences guardabi = await SharedPreferences.getInstance();
-    if(guardabi.getString('bi')== null){
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }else{
-      cliente = guardabi.getString('bi').toString();
-      print(cliente);
-    }
-  }
+   double mult(a,b){
+     return a*b;
+   }
+  // verificarBi() async{
+  //   SharedPreferences guardabi = await SharedPreferences.getInstance();
+  //   if(guardabi.getString('bi')== null){
+  //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  //   }else{
+  //     setState(() {
+  //       cliente = guardabi.getString('bi').toString();
+  //       print(cliente);
+  //     });
+  //   }
+  // }
 
   @override
   void initState(){
     super.initState();
-    verificarBi();
+    // verificarBi();
+    setState(() {
+    SharedPreferences.getInstance().then((value) =>{
+        cliente= value.getString('bi').toString(),
+    });
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -123,8 +133,18 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
                 const SizedBox(height: defaultPadding,),
                 const TextFieldNameRealizarAlu(text:"Tempo",),
                 TextFormField(
+                  keyboardType: TextInputType.number,
                   controller: _tempoController,
-                  // onChanged:  x = setPreco(int.parse(_tempoController.text), precototal),
+                  onChanged: (tempo){
+                    setState(() {
+                      valorPagar =  widget.precototal;
+                      double.parse(valorPagar);
+                      // var resultado = valorPagar * int.parse(tempo);
+                      resultado = mult(double.parse(valorPagar), int.parse(tempo));
+                      print(resultado);
+
+                    });
+                  },
                   style: const TextStyle(color: bgColor),
                   decoration: const InputDecoration(
                       hintText: "4",hintStyle: TextStyle(color: bgColor)
@@ -133,7 +153,8 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
                 const SizedBox(height: defaultPadding,),
                 const TextFieldNameRealizarAlu(text:"Total a pagar",),
                 TextFormField(
-                  controller:_precoController,
+                   initialValue: resultado.toString(),
+                  // controller:_precoController,
                   enabled: false,
                   style: const TextStyle(color: bgColor),
                   decoration: const InputDecoration(

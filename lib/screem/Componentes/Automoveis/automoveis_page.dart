@@ -12,7 +12,7 @@ class Automoveis_page extends StatefulWidget {
   State<Automoveis_page> createState() => _Automoveis_pageState();
 }
 
-class _Automoveis_pageState extends State<Automoveis_page> {
+class _Automoveis_pageState extends State<Automoveis_page>{
   late Map data;
   List automovelData = [];
   getCars() async{
