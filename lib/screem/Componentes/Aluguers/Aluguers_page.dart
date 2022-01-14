@@ -12,7 +12,7 @@ class Aluguers_page extends StatefulWidget {
 }
 
 class _Aluguers_pageState extends State<Aluguers_page>{
-  var biCliente='0964746';
+  var biCliente='';
   late Map data;
   List aluguer=[];
 
@@ -41,33 +41,34 @@ class _Aluguers_pageState extends State<Aluguers_page>{
     return GestureDetector(
       onTap: (){
         print('bi' + biCliente);
-        print('Aluguers $aluguer');
+        print('Aluguers' + aluguer.length.toString());
       },
       child: Scaffold(
         backgroundColor: const Color(0xFFFCFAF8),
         body:ListView.builder(
                   itemCount: aluguer==null? 0 : aluguer.length,
             itemBuilder: (BuildContext context, int index) {
-                 if(aluguer.length==0){
-                   return Center(
-                   child: Text("Nenhum Aluguer Encontrado",
-                       style: const TextStyle(
-                           color: bgColor,
-                           fontFamily: 'Varela',
-                           fontSize: 16.0)),
+                 if(aluguer.isEmpty){
+                   return Text("Nenhum Aluguer Encontrado",
+                         style: const TextStyle(
+                             color: bgColor,
+                             fontFamily: 'Varela',
+                             fontSize: 29.0),
                    );
                  }else {
                    return _buildCard("${aluguer[index]["matricula"]}",
                        'assets/empresa/logo1.png',
                        '${aluguer[index]["estado"]}"',
-                       "${aluguer[index]["data_inicio"]}", context);
+                       "${aluguer[index]["data_inicio"]}",
+                       "${aluguer[index]["preco_total"]}",
+                       "${aluguer[index]["tempo"]}",context);
                  }
 
   }),
       ));
   }
 
-  Widget _buildCard(String matricula,String imgPath, String estado,String dataInicio, context) {
+  Widget _buildCard(String matricula,String imgPath, String estado,String dataInicio,String preco,String tempo, context) {
     return Padding(
         padding: const EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0, right: 5.0),
         child: InkWell(
@@ -75,7 +76,11 @@ class _Aluguers_pageState extends State<Aluguers_page>{
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => Aluguers_Details(
                     assetPath: imgPath,
-                    cookiename: matricula
+                    matricula: matricula,
+                    datainicio: dataInicio,
+                    preco: preco,
+                    tempo: tempo,
+                    estado: estado,
                   ))
               );
             }

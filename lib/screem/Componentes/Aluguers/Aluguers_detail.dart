@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:rent_car/constants.dart';
 
 class Aluguers_Details extends StatelessWidget {
-  final assetPath, cookieprice, cookiename;
+  final assetPath, matricula, estado, tempo,preco,datainicio;
 
-  const Aluguers_Details({this.assetPath, this.cookieprice, this.cookiename});
+  const Aluguers_Details({this.assetPath, this.matricula, this.estado, this.tempo, this.preco, this.datainicio});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,33 +18,15 @@ class Aluguers_Details extends StatelessWidget {
             Navigator.of(context).pop();
           },
         ),
-        title: Text('Pickup',
+        title: Text('Alugueres',
             style: TextStyle(
                 fontFamily: 'Varela',
                 fontSize: 20.0,
                 color: Color(0xFF545D68))),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.notifications_none, color: Color(0xFF545D68)),
-            onPressed: () {},
-          ),
-        ],
       ),
 
       body: ListView(
         children: [
-          SizedBox(height: 15.0),
-          Padding(
-            padding: EdgeInsets.only(left: 20.0),
-            child: Text(
-              'Cookie',
-              style: TextStyle(
-                      fontFamily: 'Varela',
-                      fontSize: 42.0,
-                      fontWeight: FontWeight.bold,
-                      color: primaryColor)
-            ),
-          ),
             SizedBox(height: 15.0),
             Hero(
               tag: assetPath,
@@ -56,22 +38,66 @@ class Aluguers_Details extends StatelessWidget {
             ),
             SizedBox(height: 10.0),
             Center(
-              child: Text(cookiename,
+              child: Text(matricula,
                   style: TextStyle(
-                      color: Color(0xFF575E67),
+                      color: primaryColor,
                       fontFamily: 'Varela',
                       fontSize: 24.0)),
             ),
-            SizedBox(height: 20.0),
+            SizedBox(height: 40.0),
             Center(
               child: Container(
                 width: MediaQuery.of(context).size.width - 50.0,
-                child: Text('Cold, creamy ice cream sandwiched between delicious deluxe cookies. Pick your favorite deluxe cookies and ice cream flavor.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                      fontFamily: 'Varela',
-                      fontSize: 16.0,
-                      color: Color(0xFFB4B8B9))
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text('Preco:: CVE '+preco,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                              fontFamily: 'Varela',
+                              fontSize: 20.0,
+                              color: bgColor)
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20.0),
+                    Row(
+                      children: [
+                        Text('Data Inicio:: '+datainicio,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontFamily: 'Varela',
+                                fontSize: 20.0,
+                                color: bgColor)
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20.0),
+                    Row(
+                      children: [
+                        Text('Tempo:: ' +tempo,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontFamily: 'Varela',
+                                fontSize: 20.0,
+                                color: bgColor)
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20.0),
+                    Row(
+                      children: [
+                        Text('Preco Total:: ' +preco,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontFamily: 'Varela',
+                                fontSize: 20.0,
+                                color: bgColor)
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),

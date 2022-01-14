@@ -72,15 +72,15 @@ class _Automoveis_DetailsState extends State<Automoveis_Details> {
                 fontFamily: 'Varela',
                 fontSize: 20.0,
                 color: Color(0xFF545D68))),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.notifications_none, color: Color(0xFF545D68)),
-            onPressed: () {
-              print(multaData[0]['estado']);
-              print(naoPago.length);
-            },
-          ),
-        ],
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: Icon(Icons.notifications_none, color: Color(0xFF545D68)),
+        //     onPressed: () {
+        //       print(multaData[0]['estado']);
+        //       print(naoPago.length);
+        //     },
+        //   ),
+        // ],
       ),
 
       body: ListView(
@@ -125,16 +125,29 @@ class _Automoveis_DetailsState extends State<Automoveis_Details> {
             ),
             SizedBox(height: 20.0),
             Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width - 50.0,
-                child: Text('Cor: '+'${widget.carrocor}'+'      '
-                    'Estado: '+'${widget.carroestado}',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                      fontFamily: 'Varela',
-                      fontSize: 16.0,
-                      color: bgColor)
-                ),
+              child: Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width - 50.0,
+                    child: Text('Cor: '+'${widget.carrocor}',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                          fontFamily: 'Varela',
+                          fontSize: 16.0,
+                          color: bgColor)
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width - 50.0,
+                    child: Text('Estado: '+'${widget.carroestado}',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontFamily: 'Varela',
+                            fontSize: 18.0,
+                            color: widget.carroestado=='Livre'? Colors.green: Colors.red)
+                    ),
+                  ),
+                ],
               ),
             ),
             SizedBox(height: 20.0),

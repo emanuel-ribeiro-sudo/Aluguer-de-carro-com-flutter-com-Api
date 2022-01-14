@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:rent_car/main.dart';
 import 'package:rent_car/screem/Componentes/Automoveis/automoveis_page.dart';
+import 'package:rent_car/screem/Componentes/Clientes/clientes.dart';
 import 'package:rent_car/screem/Componentes/Empresas/empresa_page.dart';
+import 'package:rent_car/screem/cliente/clientes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class Admin extends StatelessWidget {
   const Admin({Key? key}) : super(key: key);
@@ -40,7 +42,7 @@ class Admin extends StatelessWidget {
         children: [
           Empresa_page(),
           Automoveis_page(),
-          Automoveis_page()
+          cliente_Page(),
         ],
 
       ),
