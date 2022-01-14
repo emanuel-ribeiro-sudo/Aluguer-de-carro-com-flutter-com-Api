@@ -5,8 +5,23 @@ import 'package:rent_car/screem/Componentes/Empresas/empresa_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../main.dart';
-class Clientes extends StatelessWidget {
+class Clientes extends StatefulWidget {
 
+  @override
+  State<Clientes> createState() => _ClientesState();
+}
+
+class _ClientesState extends State<Clientes> {
+  var nome=" ";
+  @override
+  void initState() {
+    setState(() {
+      SharedPreferences.getInstance().then((value) =>{
+        nome= value.getString('nome').toString(),
+      });
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -14,7 +29,7 @@ class Clientes extends StatelessWidget {
       initialIndex: 1,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Clientes",
+          title:Text('Sr(a). '+nome,
             style: TextStyle(fontWeight:FontWeight.bold),),
           automaticallyImplyLeading: false,
           bottom: const TabBar(
@@ -49,6 +64,7 @@ class Clientes extends StatelessWidget {
         ),
     );
   }
+
   Future <bool> sair() async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.clear();

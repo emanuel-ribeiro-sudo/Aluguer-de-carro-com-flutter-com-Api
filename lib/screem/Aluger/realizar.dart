@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:rent_car/screem/Componentes/Automoveis/automoveis_page.dart';
 import '../../constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -22,7 +23,7 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
 
   //final _matriculaController = TextEditingController();
   String valorPagar = '';
-  String cliente='0';
+  var cliente;
   var resultado;
   final _precoController = TextEditingController();
 
@@ -31,6 +32,9 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
   final _dataController= TextEditingController();
 
   bool estadoAluguer = true;
+
+  final _formkey = GlobalKey<FormState>();
+
    double mult(a,b){
      return a*b;
    }
@@ -73,7 +77,8 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
 
               child: SafeArea(
                 child:  SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+                  padding: const EdgeInsets.symmetric(horizontal: defaultPadding,vertical:
+                      defaultPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start ,
                     children: [
@@ -82,7 +87,7 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
                       copyWith(fontWeight: FontWeight.bold, color: bgColor),
                       ),
                   Form(
-
+                    key: _formkey,
                 child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -99,20 +104,19 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
                   ),
                 ),
                 const SizedBox(height: defaultPadding,),
-                const TextFieldNameRealizarAlu(text:"Cliente",),
-                TextFormField(
-                  initialValue: cliente,
-                  enabled: false,
-                  style: const TextStyle(color: bgColor),
-                  decoration: const InputDecoration(
-                    // hintText: "Jose Almeida",hintStyle: TextStyle(color: bgColor)
-                  ),
-                ),
-                const SizedBox(height: defaultPadding,),
                 const TextFieldNameRealizarAlu(text:"Data Inicio",),
                 TextFormField(
                   controller: _dataController,
                    keyboardType: TextInputType.datetime,
+                  validator: (data){
+                    if(data==null || data.isEmpty) {
+                      return 'Por favor, degite uma data inicio';
+                    }
+                    // }else if(data DateTime.now() ){
+                    //   return 'Por favor, degite uma senha ,maior que 6 caracteres';
+                    // }
+                    return null;
+                  },
                   // onTap: () async {
                   //   await showDatePicker(
                   //     context: context,
@@ -127,7 +131,7 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
                   // },
                   style: const TextStyle(color: bgColor),
                   decoration: const InputDecoration(
-                      hintText: "12/12/21",hintStyle: TextStyle(color: bgColor)
+                      hintText: "12/12/21",hintStyle: TextStyle(color: Colors.black45)
                   ),
                 ),
                 const SizedBox(height: defaultPadding,),
@@ -135,10 +139,17 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
                 TextFormField(
                   keyboardType: TextInputType.number,
                   controller: _tempoController,
+                  validator: (tempo){
+                    if(tempo== null || tempo.isEmpty){
+                      return 'Por favor, degite um tempo';
+                    }else if(tempo == '0'){
+                      return 'Por favor, o tempo nao pode ser 0 ';
+                    }
+                  },
                   onChanged: (tempo){
+                    valorPagar =  widget.precototal;
+                    double.parse(valorPagar);
                     setState(() {
-                      valorPagar =  widget.precototal;
-                      double.parse(valorPagar);
                       // var resultado = valorPagar * int.parse(tempo);
                       resultado = mult(double.parse(valorPagar), int.parse(tempo));
                       print(resultado);
@@ -147,13 +158,13 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
                   },
                   style: const TextStyle(color: bgColor),
                   decoration: const InputDecoration(
-                      hintText: "4",hintStyle: TextStyle(color: bgColor)
+                      hintText: "4",hintStyle: TextStyle(color: Colors.black45)
                   ),
                 ),
                 const SizedBox(height: defaultPadding,),
                 const TextFieldNameRealizarAlu(text:"Total a pagar",),
                 TextFormField(
-                   initialValue: resultado.toString(),
+                   initialValue: "$resultado",
                   // controller:_precoController,
                   enabled: false,
                   style: const TextStyle(color: bgColor),
@@ -169,9 +180,16 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
                       const SizedBox(height: defaultPadding,),
                       SizedBox(
                         width: double.infinity,
-                        child: ElevatedButton(onPressed:  (){
-                          realizarAluguer(cliente.toString(), widget.matricula, _dataController.text, _tempoController.text, _precoController.text, estadoAluguer.toString());
-                        },
+                        child: ElevatedButton(onPressed:  () async{
+                          print(cliente);
+                          if(_formkey.currentState!.validate()) {
+                            await realizarAluguer(
+                                cliente.toString(), widget.matricula,
+                                _dataController.text, _tempoController.text,
+                                resultado.toString(), estadoAluguer.toString());
+                            print(cliente);
+                          }
+                          },
                             child: const Text("Confirmar")
                         ),
                       )
@@ -185,8 +203,10 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
     );
   }
 
-  final snackBar = const SnackBar(content: Text('ca tem bi',
+  final deucerto = const SnackBar(content: Text('Aluguer Cadastrado com sucesso',
     textAlign: TextAlign.center,),backgroundColor: Colors.green,);
+  final deuerrado = const SnackBar(content: Text('Erro Cadastrar Aluguer',
+    textAlign: TextAlign.center,),backgroundColor: remColor,);
 
   Future realizarAluguer(String bi,String carro, String data, String tempo,String preco,String estado) async{
     var url = Uri.parse('$BASE_URL/users/'+bi+'/alguers');
@@ -202,10 +222,12 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
           "estado":estado
         })
     );
+    print(response.body);
     if(response.statusCode == 200){
-      // Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>Automoveis_page()));
+      ScaffoldMessenger.of(context).showSnackBar(deucerto);
+      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>Automoveis_page()));
     }else{
-      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(deuerrado);
     }
   }
 }

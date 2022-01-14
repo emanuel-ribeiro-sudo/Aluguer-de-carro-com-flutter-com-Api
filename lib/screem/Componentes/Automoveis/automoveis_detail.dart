@@ -1,16 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:rent_car/constants.dart';
 import 'package:rent_car/screem/Aluger/realizar.dart';
-
-class Automoveis_Details extends StatelessWidget {
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+class Automoveis_Details extends StatefulWidget {
   final assetPath, carroPreco, carroMatricula,carromarca,carrocor,carroestado;
 
+
   Automoveis_Details({this.assetPath, this.carroPreco, this.carroMatricula, this.carromarca, this.carrocor, this.carroestado});
+
+  @override
+  State<Automoveis_Details> createState() => _Automoveis_DetailsState();
+}
+
+class _Automoveis_DetailsState extends State<Automoveis_Details> {
+  late Map data;
+  List multaData = [];
+  List naoPago = [];
+  getMultas(String matricula) async {
+    var url = Uri.parse('$ApiPN_CV/multa');
+    http.Response response = await http.post(url,
+        headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },body: jsonEncode(<String, String>{
+          "matricula_carro": matricula
+        })
+    );
+    if(response.statusCode == 200){
+      //debugPrint(response.body);
+      data = jsonDecode(response.body);
+      print(data['multa']);
+      setState(() {
+        multaData = data['multa'];
+      });
+    }
+    for(int i=0; i<multaData.length;i++){
+      if(multaData[i]['estado'] == 'Nao Pago'){
+        setState(() {
+          print(i);
+          naoPago=multaData;
+        });
+      }
+  }
+  // getNaoPago(){
+  //
+  //   }
+  }
+  @override
+  void initState(){
+    super.initState();
+    getMultas(widget.carroMatricula);
+    // getNaoPago();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: naoPago.length!=0? Colors.red: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: naoPago.length!=0? Colors.red: Colors.white,
         elevation: 0.0,
         centerTitle: true,
         leading: IconButton(
@@ -27,7 +75,10 @@ class Automoveis_Details extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.notifications_none, color: Color(0xFF545D68)),
-            onPressed: () {},
+            onPressed: () {
+              print(multaData[0]['estado']);
+              print(naoPago.length);
+            },
           ),
         ],
       ),
@@ -38,7 +89,7 @@ class Automoveis_Details extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 20.0),
             child: Text(
-              carromarca,
+              widget.carromarca,
               style: TextStyle(
                       fontFamily: 'Varela',
                       fontSize: 42.0,
@@ -48,8 +99,8 @@ class Automoveis_Details extends StatelessWidget {
           ),
             SizedBox(height: 15.0),
             Hero(
-              tag: assetPath,
-              child: Image.asset(assetPath,
+              tag: widget.assetPath,
+              child: Image.asset(widget.assetPath,
               height: 150.0,
               width: 100.0,
               fit: BoxFit.contain
@@ -57,7 +108,7 @@ class Automoveis_Details extends StatelessWidget {
             ),
             SizedBox(height: 20.0),
             Center(
-              child: Text(carroPreco,
+              child: Text(widget.carroPreco,
                   style: TextStyle(
                       fontFamily: 'Varela',
                       fontSize: 22.0,
@@ -66,7 +117,7 @@ class Automoveis_Details extends StatelessWidget {
             ),
             SizedBox(height: 10.0),
             Center(
-              child: Text(carroMatricula,
+              child: Text(widget.carroMatricula,
                   style: TextStyle(
                       color: bgColor,
                       fontFamily: 'Varela',
@@ -76,8 +127,8 @@ class Automoveis_Details extends StatelessWidget {
             Center(
               child: Container(
                 width: MediaQuery.of(context).size.width - 50.0,
-                child: Text('Cor: '+'${carrocor}'+'      '
-                    'Estado: '+'${carroestado}',
+                child: Text('Cor: '+'${widget.carrocor}'+'      '
+                    'Estado: '+'${widget.carroestado}',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                       fontFamily: 'Varela',
@@ -95,6 +146,7 @@ class Automoveis_Details extends StatelessWidget {
                   borderRadius: BorderRadius.circular(25.0),
                   color: primaryColor
                 ),
+
                 child: Center(
                   child: TextButton(
                   child: Text('Alugar',
@@ -107,12 +159,17 @@ class Automoveis_Details extends StatelessWidget {
                 ),
                   ),
                       onPressed: (){
-                    if(carroestado!="Ocupado"){
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) =>Realizar_Aluguer(
-                              matricula:carroMatricula,
-                              precototal:carroPreco,
-                          )));
+                    if(widget.carroestado!="Ocupado"){
+                      if(naoPago.length!=0){
+                        ScaffoldMessenger.of(context).showSnackBar(erro);
+                      }else {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) =>
+                                Realizar_Aluguer(
+                                  matricula: widget.carroMatricula,
+                                  precototal: widget.carroPreco,
+                                )));
+                      }
                     }else{
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           }
@@ -126,6 +183,7 @@ class Automoveis_Details extends StatelessWidget {
       ),
     );
   }
+
   final snackBar = const SnackBar(content: Text('Automovel Ocuoado',
     textAlign: TextAlign.center,),backgroundColor: remColor,);
 }

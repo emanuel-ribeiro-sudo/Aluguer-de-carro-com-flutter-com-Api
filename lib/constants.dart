@@ -13,6 +13,10 @@ OutlineInputBorder textFieldBorder = OutlineInputBorder(
       color: Colors.black.withOpacity(0.1)
   ),
 );
-const String URL = '172.16.4.143';
+const String URL = '192.168.42.233';
 const String BASE_URL = 'http://$URL:3333';
 const String ApiDGTR  = 'http://$URL:8080';
+const String ApiPN_CV  = 'http://$URL:1322';
+
+final erro = const SnackBar(content: Text('Operacao Indisponivel',
+  textAlign: TextAlign.center,),backgroundColor: remColor,);

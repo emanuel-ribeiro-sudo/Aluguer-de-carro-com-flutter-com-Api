@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                           FocusScopeNode curentFocus = FocusScope.of(context);
                           if( _formkey.currentState!.validate()){
                            // bool dacerto =
-                            login(_emailController.text,_passwordController.text);
+                            await login(_emailController.text,_passwordController.text);
                             // print(dacerto);
                             if(!curentFocus.hasPrimaryFocus){
                               curentFocus.unfocus();
@@ -153,6 +153,7 @@ class _LoginPageState extends State<LoginPage> {
    Future login(String username, String password) async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     SharedPreferences guardabi = await SharedPreferences.getInstance();
+    SharedPreferences guardarcargo = await SharedPreferences.getInstance();
     var url = Uri.parse('$BASE_URL/users/login/');
     var response = await http.post(url,
         headers: <String, String>{
@@ -168,6 +169,8 @@ class _LoginPageState extends State<LoginPage> {
       //  print(_json['token']);
       await sharedPreferences.setString('token', "Token ${_json['token']}");
       await guardabi.setString('bi', "${_json['user']['bi']}");
+      await guardabi.setString('cargo', "${_json['user']['cargo']}");
+      await guardabi.setString('nome', "${_json['user']['nome']}");
       if(_json['user']['cargo']=='Cliente' || _json['user']['cargo']=='cliente'){
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context)=>Clientes(

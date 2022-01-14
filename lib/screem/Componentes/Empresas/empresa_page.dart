@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:rent_car/screem/empresa/principal_empresa.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../constants.dart';
 
-class Empresa_page extends StatelessWidget {
+class Empresa_page extends StatefulWidget {
   const Empresa_page({Key? key}) : super(key: key);
 
+  @override
+  State<Empresa_page> createState() => _Empresa_pageState();
+}
+
+class _Empresa_pageState extends State<Empresa_page> {
+  var cargo;
+  @override
+  void initState() {
+    setState(() {
+      SharedPreferences.getInstance().then((value) =>{
+        cargo= value.getString('cargo').toString(),
+      });
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +53,9 @@ class Empresa_page extends StatelessWidget {
           backgroundColor: primaryColor,
           foregroundColor: Colors.white,
           onPressed: () {
+            if(cargo!='Admin'){
+              ScaffoldMessenger.of(context).showSnackBar(erro);
+            }
             // Respond to button press
           },
           child: Icon(Icons.add),

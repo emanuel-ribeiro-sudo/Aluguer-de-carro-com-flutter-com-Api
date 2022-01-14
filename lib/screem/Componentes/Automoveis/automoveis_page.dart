@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../../../constants.dart';
 import 'automoveis_detail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Automoveis_page extends StatefulWidget {
 
@@ -15,6 +16,7 @@ class Automoveis_page extends StatefulWidget {
 class _Automoveis_pageState extends State<Automoveis_page>{
   late Map data;
   List automovelData = [];
+  var cargo;
   getCars() async{
     var url = Uri.parse('$BASE_URL/automoveis');
     http.Response response = await http.get(url);
@@ -29,6 +31,11 @@ class _Automoveis_pageState extends State<Automoveis_page>{
   void initState(){
     super.initState();
     getCars();
+    setState(() {
+      SharedPreferences.getInstance().then((value) =>{
+        cargo= value.getString('cargo').toString(),
+      });
+    });
   }
 
   @override
@@ -95,7 +102,9 @@ class _Automoveis_pageState extends State<Automoveis_page>{
           backgroundColor: primaryColor,
           foregroundColor: Colors.white,
           onPressed: () {
-            // Respond to button press
+            if(cargo!='Admin'){
+              ScaffoldMessenger.of(context).showSnackBar(erro);
+            }
           },
           child: const Icon(Icons.add),
         )
@@ -132,11 +141,12 @@ class _Automoveis_pageState extends State<Automoveis_page>{
                 child: Column(children: [
                   Padding(
                       padding: const EdgeInsets.all(5.0),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: const [
-                                 Icon(Icons.remove_circle, color: remColor)
-                          ])),
+                      // child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.end,
+                      //     children: const [
+                      //            Icon(Icons.remove_circle, color: remColor)
+                      //     ])
+                     ),
                   Hero(
                       tag: imgPath,
                       child: Container(
@@ -160,13 +170,11 @@ class _Automoveis_pageState extends State<Automoveis_page>{
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                          Text(preco,
+                          Text('CVE  '+preco,
                           style: const TextStyle(
                               color: bgColor,
                               fontFamily: 'Varela',
                               fontSize: 16.0)),
-                                const Icon(Icons.edit,
-                                color: bgColor, size: 24.0),
                             // if (added) ...[
                             //   Icon(Icons.remove_circle_outline,
                             //       color: Color(0xFFD17E50), size: 12.0),
@@ -184,8 +192,6 @@ class _Automoveis_pageState extends State<Automoveis_page>{
 
                 ]))));
   }
-
-
 }
 
 
