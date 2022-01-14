@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:rent_car/screem/Componentes/Clientes/cliente_detail.dart';
 import 'dart:convert';
 
 import '../../../constants.dart';
@@ -29,7 +30,8 @@ class _cliente_PageState extends State<cliente_Page> {
                   var usuario = snapshot.data!['users'][index];
               return ListTile(
                 onTap: (){
-                  print(usuario);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context)=> client_details(user: usuario,)));
                 },
                 leading: CircleAvatar(
                   child: Text('${index}')
