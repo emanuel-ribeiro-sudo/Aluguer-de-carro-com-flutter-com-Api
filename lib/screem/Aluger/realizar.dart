@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:rent_car/screem/Componentes/Automoveis/automoveis_page.dart';
+import 'package:rent_car/screem/cliente/clientes.dart';
 import '../../constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -225,7 +226,7 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
     print(response.body);
     if(response.statusCode == 200){
       ScaffoldMessenger.of(context).showSnackBar(deucerto);
-      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>Automoveis_page()));
+      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>Clientes()));
     }else{
       ScaffoldMessenger.of(context).showSnackBar(deuerrado);
     }

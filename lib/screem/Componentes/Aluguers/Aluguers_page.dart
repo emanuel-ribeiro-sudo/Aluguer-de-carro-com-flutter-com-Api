@@ -12,7 +12,7 @@ class Aluguers_page extends StatefulWidget {
 }
 
 class _Aluguers_pageState extends State<Aluguers_page>{
-  var biCliente='0006';
+  var biCliente='0964746';
   late Map data;
   List aluguer=[];
 
@@ -21,9 +21,8 @@ class _Aluguers_pageState extends State<Aluguers_page>{
     http.Response response = await http.get(url);
     print(response.body);
     if(response.statusCode==200){
-      aluguer = jsonDecode(response.body);
       setState(() {
-        // aluguer=[data];
+        aluguer = jsonDecode(response.body);
       });
     }
   }
@@ -32,47 +31,43 @@ class _Aluguers_pageState extends State<Aluguers_page>{
     setState(() {
       SharedPreferences.getInstance().then((value) =>{
         biCliente= value.getString('bi').toString(),
+        getCars(biCliente),
       });
     });
-    getCars(biCliente);
     super.initState();
   }
 @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        print(biCliente);
+        print('bi' + biCliente);
+        print('Aluguers $aluguer');
       },
       child: Scaffold(
         backgroundColor: const Color(0xFFFCFAF8),
-        body: ListView(
-          children: <Widget>[
-            const SizedBox(height: 15.0),
-            Container(
-                padding: const EdgeInsets.only(right: 15.0),
-                width: MediaQuery.of(context).size.width - 30.0,
-                height: MediaQuery.of(context).size.height - 50.0,
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  primary: false,
-                  crossAxisSpacing: 10.0,
-                  mainAxisSpacing: 15.0,
-                  childAspectRatio: 0.8,
-                  children: <Widget>[
-                    _buildCard("${biCliente}",'assets/empresa/logo1.png', context),
-                    // _buildCard('Cookie cream','assets/empresa/logo1.png', context),
-                    // _buildCard('Cookie classic','assets/empresa/logo1.png',  context),
-                    // _buildCard('Cookie choco','assets/empresa/logo1.png',context),
-                  ],
-                )),
-            const SizedBox(height: 15.0),
-          ],
-        ),
-      ),
-    );
+        body:ListView.builder(
+                  itemCount: aluguer==null? 0 : aluguer.length,
+            itemBuilder: (BuildContext context, int index) {
+                 if(aluguer.length==0){
+                   return Center(
+                   child: Text("Nenhum Aluguer Encontrado",
+                       style: const TextStyle(
+                           color: bgColor,
+                           fontFamily: 'Varela',
+                           fontSize: 16.0)),
+                   );
+                 }else {
+                   return _buildCard("${aluguer[index]["matricula"]}",
+                       'assets/empresa/logo1.png',
+                       '${aluguer[index]["estado"]}"',
+                       "${aluguer[index]["data_inicio"]}", context);
+                 }
+
+  }),
+      ));
   }
 
-  Widget _buildCard(String matricula,String imgPath, context) {
+  Widget _buildCard(String matricula,String imgPath, String estado,String dataInicio, context) {
     return Padding(
         padding: const EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0, right: 5.0),
         child: InkWell(
@@ -98,11 +93,7 @@ class _Aluguers_pageState extends State<Aluguers_page>{
                 child: Column(children: [
                   Padding(
                       padding: const EdgeInsets.all(5.0),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: const [
-                                 Icon(Icons.remove_circle, color: remColor)
-                          ])),
+                      ),
                   Hero(
                       tag: imgPath,
                       child: Container(
@@ -125,22 +116,17 @@ class _Aluguers_pageState extends State<Aluguers_page>{
                           style: const TextStyle(
                               color: bgColor,
                               fontFamily: 'Varela',
-                              fontSize: 16.0)),
-                                const Icon(Icons.edit,
-                                color: bgColor, size: 24.0),
-                            // if (added) ...[
-                            //   Icon(Icons.remove_circle_outline,
-                            //       color: Color(0xFFD17E50), size: 12.0),
-                            //   Text('3',
-                            //       style: TextStyle(
-                            //           fontFamily: 'Varela',
-                            //           color: Color(0xFFD17E50),
-                            //           fontWeight: FontWeight.bold,
-                            //           fontSize: 12.0)),
-                            //   Icon(Icons.add_circle_outline,
-                            //       color: Color(0xFFD17E50), size: 12.0),
-                            // ]
+                              fontSize: 16.0)
+                          ),
                           ])
+                  ),
+                  Padding(padding: const EdgeInsets.only(left: 5.0,right: 5.0),
+                    child:Text(estado.compareTo('true')!=1?'Desativo':'Ativo',
+                        style:TextStyle(
+                            color: estado.compareTo('true')!=1? Colors.red :Colors.green,
+                            fontFamily: 'Varela',
+                            fontSize: 20.0)
+                    ),
                   )
 
                 ]))));
