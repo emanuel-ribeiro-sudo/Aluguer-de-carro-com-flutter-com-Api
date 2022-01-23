@@ -50,17 +50,6 @@ class Aluguers_Details extends StatelessWidget {
                 width: MediaQuery.of(context).size.width - 50.0,
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        Text('Preco:: CVE '+preco,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                              fontFamily: 'Varela',
-                              fontSize: 20.0,
-                              color: bgColor)
-                        ),
-                      ],
-                    ),
                     SizedBox(height: 20.0),
                     Row(
                       children: [

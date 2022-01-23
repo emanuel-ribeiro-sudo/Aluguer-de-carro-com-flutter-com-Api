@@ -34,7 +34,7 @@ class _cliente_PageState extends State<cliente_Page> {
                       MaterialPageRoute(builder: (context)=> client_details(user: usuario,)));
                 },
                 leading: CircleAvatar(
-                  child: Text('${index}')
+                  child:Image.asset('assets/perfil.png')
                   // Text('${usuario['bi'].toString()}'),
                 ),
                 title: Text('${usuario['nome']}'),

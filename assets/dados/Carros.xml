@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="Carros.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<?xml-stylesheet href="Carros.xsl" type="text/xsl"?>
 <Carros dono="Niguem">
     <carro >
         <matricula> ST-16-NL</matricula>
@@ -7,7 +8,7 @@
         <modelo> Hiace </modelo>
         <kilometragem> 200 KM </kilometragem>
         <cor> Cinza </cor>
-        <preco>3500</preco>
+        <preco>4500</preco>
         <img> 1 </img>
         <livre>false</livre>
     </carro>

@@ -1,12 +1,10 @@
-
-
 import 'package:flutter/material.dart';
-import 'package:rent_car/screem/Componentes/Automoveis/automoveis_page.dart';
 import 'package:rent_car/screem/cliente/clientes.dart';
 import '../../constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 class Realizar_Aluguer extends StatefulWidget {
 
@@ -31,6 +29,8 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
   final _tempoController = TextEditingController();
 
   final _dataController= TextEditingController();
+
+  var _dateTime;
 
   bool estadoAluguer = true;
 
@@ -106,35 +106,71 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
                 ),
                 const SizedBox(height: defaultPadding,),
                 const TextFieldNameRealizarAlu(text:"Data Inicio",),
-                TextFormField(
-                  controller: _dataController,
-                   keyboardType: TextInputType.datetime,
-                  validator: (data){
-                    if(data==null || data.isEmpty) {
-                      return 'Por favor, degite uma data inicio';
-                    }
-                    // }else if(data DateTime.now() ){
-                    //   return 'Por favor, degite uma senha ,maior que 6 caracteres';
-                    // }
-                    return null;
-                  },
-                  // onTap: () async {
-                  //   await showDatePicker(
-                  //     context: context,
-                  //     initialDate: DateTime.now(),
-                  //     firstDate: DateTime.now(),
-                  //     lastDate: DateTime(2025),
-                  //   ).then((selectedDate) {
-                  //     if (selectedDate != null) {
-                  //       _dateController.text = DateFormat('yyyy-MM-dd').format(selectedDate);
-                  //     }
-                  //   });
-                  // },
-                  style: const TextStyle(color: bgColor),
-                  decoration: const InputDecoration(
-                      hintText: "12/12/21",hintStyle: TextStyle(color: Colors.black45)
+                // TextFormField(
+                //   // controller: _dataController,
+                //   initialValue:_dateTime.toString (),
+                //    keyboardType: TextInputType.datetime,
+                //   validator: (data){
+                //     if(data==null || data.isEmpty) {
+                //       return 'Por favor, degite uma data inicio';
+                //     }
+                //     return null;
+                //   },
+                //   onTap: () async {
+                //     await showDatePicker(context: context,
+                //         initialDate: DateTime.now(),
+                //         firstDate: DateTime(2020),
+                //         lastDate: DateTime(2050),
+                //     ).then((date){
+                //       setState(() {
+                //         _dateTime =date!;
+                //         print(_dateTime);
+                //       });
+                //     });
+                //   },
+                //   style: const TextStyle(color: bgColor),
+                //   decoration: const InputDecoration(
+                //       hintText: "12/12/21",hintStyle: TextStyle(color: Colors.black45)
+                //   ),
+                // ),
+                  const SizedBox(height: defaultPadding,),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black12)
+                    ),
+                    child: Column(
+                      // mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          children: [
+                            ElevatedButton(
+                                child: Icon(Icons.calendar_today_outlined),
+                                onPressed: (){
+                                  showDatePicker(context: context,
+                                    initialDate: _dateTime==null? DateTime.now():_dateTime,
+                                    firstDate: DateTime(2020),
+                                    lastDate: DateTime(2050),
+                                  ).then((date){
+                                    setState(() {
+                                      _dateTime =date!;
+                                      final DateFormat formatter = DateFormat('yyyy-MM-dd');
+                                      final String formatted = formatter.format(_dateTime as DateTime);
+                                      // print(formatted);
+                                      _dateTime=formatted;
+                                    });
+                                  });
+                                }),
+                            VerticalDivider(),
+                            Text(_dateTime==null? "Seleciona a data":_dateTime.toString(),
+                              textAlign: TextAlign.end,
+                              style: const TextStyle(color: bgColor,
+                                fontFamily: 'Varela',
+                                fontSize: 16.0,),),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
                 const SizedBox(height: defaultPadding,),
                 const TextFieldNameRealizarAlu(text:"Tempo",),
                 TextFormField(
@@ -164,16 +200,30 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
                 ),
                 const SizedBox(height: defaultPadding,),
                 const TextFieldNameRealizarAlu(text:"Total a pagar",),
-                TextFormField(
-                   initialValue: "$resultado",
-                  // controller:_precoController,
-                  enabled: false,
-                  style: const TextStyle(color: bgColor),
-                  decoration: const InputDecoration(
-                    // hintText: "6000 CVE",hintStyle: TextStyle(color: bgColor)
+                // TextFormField(
+                //    initialValue: "$resultado",
+                //   // controller:_precoController,
+                //   enabled: false,
+                //   style: const TextStyle(color: bgColor),
+                //   decoration: const InputDecoration(
+                //     // hintText: "6000 CVE",hintStyle: TextStyle(color: bgColor)
+                //   ),
+                // ),
+                // const SizedBox(height: defaultPadding,),
+                  Container(
+                    height: 57,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black12)
+                        ),
+                    child: Row(
+                      children: [
+                        Text(resultado==null? "Atribua um Tempo":resultado.toString(),
+                          style: const TextStyle(color: bgColor,
+                            fontFamily: 'Varela',
+                            fontSize: 16.0,),),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: defaultPadding,),
                 ],
               )
             ),
@@ -183,12 +233,16 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
                         width: double.infinity,
                         child: ElevatedButton(onPressed:  () async{
                           print(cliente);
+                          if(_dateTime!=null){
                           if(_formkey.currentState!.validate()) {
                             await realizarAluguer(
                                 cliente.toString(), widget.matricula,
-                                _dataController.text, _tempoController.text,
+                                _dateTime.toString(), _tempoController.text,
                                 resultado.toString(), estadoAluguer.toString());
                             print(cliente);
+                          }
+                          }else{
+                            ScaffoldMessenger.of(context).showSnackBar(deuerrado);
                           }
                           },
                             child: const Text("Confirmar")
@@ -206,7 +260,7 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
 
   final deucerto = const SnackBar(content: Text('Aluguer Cadastrado com sucesso',
     textAlign: TextAlign.center,),backgroundColor: Colors.green,);
-  final deuerrado = const SnackBar(content: Text('Erro Cadastrar Aluguer',
+  final deuerrado = const SnackBar(content: Text('Erro Cadastrar Aluguer!! Verifique os campos',
     textAlign: TextAlign.center,),backgroundColor: remColor,);
 
   Future realizarAluguer(String bi,String carro, String data, String tempo,String preco,String estado) async{

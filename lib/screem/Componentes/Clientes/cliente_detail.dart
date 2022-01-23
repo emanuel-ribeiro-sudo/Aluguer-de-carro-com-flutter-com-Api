@@ -12,18 +12,21 @@ class client_details extends StatelessWidget {
       ),
       body: Center(
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(user['bi']),
-              Text(user['nome']),
-              Text(user['morrada']),
-              Text(user['telefone']),
-              Text(user['numero_carta']),
-              Text(user['cargo']),
-              Text(user['email']),
-              Text(user['logado'].toString()),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(user['nome'],textAlign: TextAlign.justify, style: TextStyle(fontFamily: 'varela',fontSize: 16.0,fontWeight:FontWeight.bold ),),
+                Text(user['bi'],textAlign: TextAlign.justify, style: TextStyle(fontFamily: 'varela',fontSize: 16.0,fontWeight:FontWeight.bold ),),
+                Text(user['morrada'],textAlign: TextAlign.justify, style: TextStyle(fontFamily: 'varela',fontSize: 16.0,fontWeight:FontWeight.bold ),),
+                Text(user['telefone'],textAlign: TextAlign.justify, style: TextStyle(fontFamily: 'varela',fontSize: 16.0,fontWeight:FontWeight.bold ),),
+                Text(user['numero_carta'],textAlign: TextAlign.justify, style: TextStyle(fontFamily: 'varela',fontSize: 16.0,fontWeight:FontWeight.bold ),),
+                Text(user['cargo'],textAlign: TextAlign.justify, style: TextStyle(fontFamily: 'varela',fontSize: 16.0,fontWeight:FontWeight.bold ),),
+                Text(user['email'],textAlign: TextAlign.justify, style: TextStyle(fontFamily: 'varela',fontSize: 16.0,fontWeight:FontWeight.bold ),),
+                Text(user['logado'].toString(),textAlign: TextAlign.justify, style: TextStyle(fontFamily: 'varela',fontSize: 16.0,fontWeight:FontWeight.bold ),),
+              ],
+            ),
           ),
         ),
       ),

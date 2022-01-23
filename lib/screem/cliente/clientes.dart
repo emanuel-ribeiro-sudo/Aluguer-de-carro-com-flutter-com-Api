@@ -29,6 +29,12 @@ class _ClientesState extends State<Clientes> {
       initialIndex: 1,
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: CircleAvatar(
+              child: Image.asset('assets/account.png'),
+              radius: 35,
+            ), onPressed: () { print('iiis'); },
+          ),
           title:Text('Sr(a). '+nome,
             style: TextStyle(fontWeight:FontWeight.bold),),
           automaticallyImplyLeading: false,

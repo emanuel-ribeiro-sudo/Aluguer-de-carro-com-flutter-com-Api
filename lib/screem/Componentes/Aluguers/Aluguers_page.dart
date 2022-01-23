@@ -57,7 +57,7 @@ class _Aluguers_pageState extends State<Aluguers_page>{
                    );
                  }else {
                    return _buildCard("${aluguer[index]["matricula"]}",
-                       'assets/empresa/logo1.png',
+                       'assets/aluguer.png',
                        '${aluguer[index]["estado"]}"',
                        "${aluguer[index]["data_inicio"]}",
                        "${aluguer[index]["preco_total"]}",
