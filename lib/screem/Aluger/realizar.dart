@@ -233,7 +233,7 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
                         width: double.infinity,
                         child: ElevatedButton(onPressed:  () async{
                           print(cliente);
-                          if(_dateTime!=null){
+                          // if(_dateTime){
                           if(_formkey.currentState!.validate()) {
                             await realizarAluguer(
                                 cliente.toString(), widget.matricula,
@@ -241,9 +241,9 @@ class _Realizar_AluguerState extends State<Realizar_Aluguer> {
                                 resultado.toString(), estadoAluguer.toString());
                             print(cliente);
                           }
-                          }else{
-                            ScaffoldMessenger.of(context).showSnackBar(deuerrado);
-                          }
+                          // }else{
+                          //   ScaffoldMessenger.of(context).showSnackBar(deuerrado);
+                          // }
                           },
                             child: const Text("Confirmar")
                         ),
